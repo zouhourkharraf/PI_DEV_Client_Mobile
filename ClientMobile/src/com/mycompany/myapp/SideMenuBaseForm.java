@@ -27,6 +27,8 @@ import com.codename1.ui.Label;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
+
 
 /**
  * Common code that can setup the side menu
@@ -46,7 +48,7 @@ public abstract class SideMenuBaseForm extends Form {
     public SideMenuBaseForm() {
     }
 
-    public SideMenuBaseForm(Layout contentPaneLayout) {
+    public SideMenuBaseForm(Layout contentPaneLayout){
         super(contentPaneLayout);
     }
     
@@ -66,7 +68,13 @@ public abstract class SideMenuBaseForm extends Form {
         getToolbar().addMaterialCommandToSideMenu("  Activity", FontImage.MATERIAL_TRENDING_UP,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Tasks", FontImage.MATERIAL_ACCESS_TIME,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Account Settings", FontImage.MATERIAL_SETTINGS,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> new LoginForm(res).show());
+        getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> {
+            try {
+                new LoginForm(res).show();
+            } catch (IOException ex) {
+              //  Logger.getLogger(SideMenuBaseForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
     
     protected abstract void showOtherForm(Resources res);

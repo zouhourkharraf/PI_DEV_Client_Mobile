@@ -31,6 +31,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
 
 /**
  * The Login form
@@ -38,24 +39,23 @@ import com.codename1.ui.util.Resources;
  * @author Shai Almog
  */
 public class LoginForm extends Form {
-    public LoginForm(Resources theme) {
-        super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER_ABSOLUTE));
-        setUIID("LoginForm");
+    public LoginForm(Resources theme) throws IOException {
+        super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_TOTAL_BELOW));
+        setUIID("LoginStyle1");
         Container welcome = FlowLayout.encloseCenter(
-                new Label("Welcome, ", "WelcomeWhite"),
-                new Label("Jennifer", "WelcomeBlue")
+                       new Label("                                                 "),
+                 new Label("                                                 "),
+                new Label("Connectez-vous ", "WelcomeBlue"),
+                 new Label(" à votre compte", "WelcomeBlue")
         );
         
-        getTitleArea().setUIID("Container");
+            getTitleArea().setUIID("Container");
         
-        Image profilePic = theme.getImage("user-picture.jpg");
-        Image mask = theme.getImage("round-mask.png");
-        profilePic = profilePic.fill(mask.getWidth(), mask.getHeight());
+        Image profilePic = Image.createImage("/grand_logo_finale.png");
         Label profilePicLabel = new Label(profilePic, "ProfilePic");
-        profilePicLabel.setMask(mask.createMask());
         
-        TextField login = new TextField("jennifer.wilson88@gmail.com", "Login", 20, TextField.EMAILADDR) ;
-        TextField password = new TextField("password", "Password", 20, TextField.PASSWORD) ;
+        TextField login = new TextField("", "Pseudo", 20, TextField.USERNAME) ;
+        TextField password = new TextField("", "Mot de passe", 20, TextField.PASSWORD) ;
         login.getAllStyles().setMargin(LEFT, 0);
         password.getAllStyles().setMargin(LEFT, 0);
         Label loginIcon = new Label("", "TextField");
@@ -65,7 +65,7 @@ public class LoginForm extends Form {
         FontImage.setMaterialIcon(loginIcon, FontImage.MATERIAL_PERSON_OUTLINE, 3);
         FontImage.setMaterialIcon(passwordIcon, FontImage.MATERIAL_LOCK_OUTLINE, 3);
         
-        Button loginButton = new Button("LOGIN");
+        Button loginButton = new Button("SE CONNERCTER");
         loginButton.setUIID("LoginButton");
         loginButton.addActionListener(e -> {
             Toolbar.setGlobalToolbar(false);
@@ -73,8 +73,18 @@ public class LoginForm extends Form {
             Toolbar.setGlobalToolbar(true);
         });
         
-        Button createNewAccount = new Button("CREATE NEW ACCOUNT");
+        //Bouton Mot de passe oublié
+        Button createNewAccount = new Button("Mot de passe oublié ?");
         createNewAccount.setUIID("CreateNewAccountButton");
+       
+        //Bouton "Créer un compte élève"
+        Button CreerCompteEleve = new Button("Créer un compte élève");
+        CreerCompteEleve.setUIID("RemainingTasks");
+        //Bouton "Créer un compte enseignant"
+         Button CreerCompteEenseignant = new Button("Créer un compte enseignant");
+        CreerCompteEenseignant.setUIID("RemainingTasks");
+        
+        
         
         // We remove the extra space for low resolution devices so things fit better
         Label spaceLabel;
@@ -94,7 +104,7 @@ public class LoginForm extends Form {
                 BorderLayout.center(password).
                         add(BorderLayout.WEST, passwordIcon),
                 loginButton,
-                createNewAccount
+                createNewAccount,CreerCompteEleve,CreerCompteEenseignant
         );
         add(BorderLayout.CENTER, by);
         

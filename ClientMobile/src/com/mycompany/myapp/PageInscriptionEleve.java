@@ -41,23 +41,21 @@ import java.io.IOException;
 
 
 
-public class PageInscription extends Form {
-    public PageInscription(Resources theme) throws IOException {
+public class PageInscriptionEleve extends Form {
+    public PageInscriptionEleve(Resources theme) throws IOException {
         super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_TOTAL_BELOW));
         setUIID("LoginForm");
         Container welcome = FlowLayout.encloseCenter(
                 new Label("                            "),
-                new Label("Créer un compte", "WelcomeWhite"),
-              new Label("Enseignant :", "WelcomeBlue")
+                new Label("  Créer un compte  ", "WelcomeWhite"),
+              new Label("  élève :", "WelcomeBlue")
         );
         
         getTitleArea().setUIID("Container");
         
         Image profilePic = Image.createImage("/logo_finale.png");
-      //  Image mask = theme.getImage("round-mask.png");
-      //  profilePic = profilePic.fill(mask.getWidth(), mask.getHeight());
         Label profilePicLabel = new Label(profilePic, "ProfilePic");
-    //    profilePicLabel.setMask(mask.createMask());
+   
         
         TextField champ_nom = new TextField("Votre nom", "nom", 20, TextField.USERNAME) ;
         TextField champ_prenom = new TextField("Votre prénom", "prenom", 20, TextField.USERNAME) ;
@@ -116,7 +114,7 @@ public class PageInscription extends Form {
      
            //Définir le label pour l'age +  les contraintes (controle de saisie):
            champ_age.setLabelForComponent(ageIcon);
-           champ_age.setMin(22);
+           champ_age.setMin(5);
            champ_age.setMax(200);
            //FIN Définir le label pour l'age +  les contraintes (controle de saisie):
         //Créer un Container qui contient le label de l'age et le NumericSpinner
@@ -142,8 +140,11 @@ public class PageInscription extends Form {
         {
         genre_choisi=OnOffGenre.getOff();
         }
-          Boolean formulaire_valide=false; //On va utiliser cette variable pour tester la validité du formulaire
+        
+         
          // ****** Controle de saisie ***********
+      Boolean formulaire_valide=false; //On va utiliser cette variable pour tester la validité du formulaire
+      
     if( (champ_nom.getText().isEmpty()) || ( champ_prenom.getText().isEmpty() ) || ( champ_email.getText().isEmpty() )||( champ_mp.getText().isEmpty() )|| ( champ_confirmation_mp.getText().isEmpty() ) )
     {
         Dialog.show("Erreur !","Veuillez renseigner tous les champs !!!","OK",null);
@@ -202,12 +203,12 @@ public class PageInscription extends Form {
           
         if(formulaire_valide)
         {
-           String pseudo1=ServiceUtilisateur.getInstance().AjouterUtilisateur(champ_nom, champ_prenom, age1.toString(), genre_choisi, champ_email, champ_mp, champ_confirmation_mp,"enseignant", theme);
+           String pseudo1=ServiceUtilisateur.getInstance().AjouterUtilisateur(champ_nom, champ_prenom, age1.toString(), genre_choisi, champ_email, champ_mp, champ_confirmation_mp,"élève", theme);
         Dialog.show("Félicitation !","Votre inscription a été effectué avec succès !  Votre pseudo : "+pseudo1,"OK",null);
                 try {
                     new LoginForm(theme).show();
                 } catch (IOException ex) {
-                  //  Logger.getLogger(PageInscription.class.getName()).log(Level.SEVERE, null, ex);
+                   // Logger.getLogger(PageInscriptionEleve.class.getName()).log(Level.SEVERE, null, ex);
                 }
         }
          
