@@ -10,7 +10,7 @@ package com.mycompany.utils;
  */
 public class Statics {
     
-     public static final String BASE_URL="";
+     public static final String BASE_URL="http://localhost/3A/PI_DEV_WEB/Client_Symfony_Gestion_des_utilisateurs/ClientSymfony/public/index.php"; //L'url de base à laquelle on va à chaque fois ajouter une autre partie selon la fonctionalité souhaité
      
     
 }

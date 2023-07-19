@@ -2,6 +2,7 @@
 
 <resource majorVersion="1" minorVersion="11" useXmlUI="false">
     <image name="BackgroundRect.png" type="multi"  />
+    <image name="DashboardAdminMobile1.png"  />
     <image name="duke.png" type="multi"  />
     <image name="gradient-overlay.png"  />
     <image name="Image 3"  />
@@ -117,5 +118,4 @@
         <val key="LoginStyle1.bgImage" value="Image 3" />
         <val key="LoginStyle1.bgType" value="1" />
         <val key="LoginStyle1.margin" value="0.0,0.0,0.0,0.0" />
-        <val key="LoginStyle1.padding" value="0.0,0.0,0.0,0.0" />
-        <val key="LoginStyle
+        <val key="LoginStyle1.padding" value="

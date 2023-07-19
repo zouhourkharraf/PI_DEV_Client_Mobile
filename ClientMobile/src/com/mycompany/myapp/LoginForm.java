@@ -26,11 +26,12 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
-import com.codename1.ui.Toolbar;
+
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.mycompany.services.ServiceUtilisateur;
 import java.io.IOException;
 
 /**
@@ -67,12 +68,8 @@ public class LoginForm extends Form {
         
         Button loginButton = new Button("SE CONNERCTER");
         loginButton.setUIID("LoginButton");
-        loginButton.addActionListener(e -> {
-            Toolbar.setGlobalToolbar(false);
-            new WalkthruForm(theme).show();
-            Toolbar.setGlobalToolbar(true);
-        });
         
+                
         //Bouton Mot de passe oublié
         Button createNewAccount = new Button("Mot de passe oublié ?");
         createNewAccount.setUIID("CreateNewAccountButton");
@@ -94,6 +91,8 @@ public class LoginForm extends Form {
             spaceLabel = new Label(" ");
         }
         
+          
+        
         
         Container by = BoxLayout.encloseY(
                 welcome,
@@ -108,8 +107,29 @@ public class LoginForm extends Form {
         );
         add(BorderLayout.CENTER, by);
         
+        
+        
+        
+        
+        
         // for low res and landscape devices
         by.setScrollableY(true);
         by.setScrollVisible(false);
+        
+               // ***********************************  Gestion de l'événement suite au clique sur le bouton de connexion *************************
+        loginButton.addActionListener(e -> {
+            ServiceUtilisateur.getInstance().login(login, password, theme);
+          
+        });
+        
+         // ***********************************  FIN Gestion de l'événement suite au clique sur le bouton de connexion *************************
+        
+        
+        
     }
+
+ 
+
+
+
 }

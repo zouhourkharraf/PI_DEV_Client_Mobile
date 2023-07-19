@@ -51,13 +51,14 @@ public class MyApplication {
             return;
         }
         
-       try {
+    //   try {
           // new PageInscription(theme).show();
          //  new PageInscriptionEleve(theme).show();
-           new LoginForm(theme).show();
-        } catch (IOException ex) {
+           //new LoginForm(theme).show();
+           new DashboardAdministrateur(theme).show();
+    //    } catch (IOException ex) {
             
-        }   
+      //  }   
         
         
     }
