@@ -12,21 +12,20 @@ import com.codename1.ui.util.Resources;
 import com.mycompany.utils.Statics;
 
 import com.codename1.io.JSONParser;
-//import java.io.CharArrayReader;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.NetworkEvent;
+
 import com.codename1.ui.events.ActionListener;
 import com.mycompany.entities.Utilisateur;
 import com.mycompany.myapp.DashboardAdministrateur;
-import com.mycompany.myapp.LoginForm;
 import com.mycompany.myapp.ProfileForm;
-import com.mycompany.myapp.SideMenuBaseForm;
-import com.mycompany.myapp.StatsForm;
-import com.mycompany.myapp.WalkthruForm;
+import com.mycompany.utils.Session;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Map;
+
+//import java.util.ArrayList;
+//import java.util.Map;
 import java.util.List;
 
 /**
@@ -142,23 +141,24 @@ public class ServiceUtilisateur {
      { 
           try
     {
-       //  System.out.println("data ==="+json);
+        
       Map<String,Object> user=j.parseJSON(new CharArrayReader(json.toCharArray())); 
-      
-      if( ( user.get("role_util").toString().compareTo("enseignant")==0) ||( user.get("role_util").toString().compareTo("élève")==0) )
+        System.out.println("data ==="+user);
+    
+        if( ( user.get("role_util").toString().compareTo("enseignant")==0) ||( user.get("role_util").toString().compareTo("élève")==0) )
         {
-          //System.out.println("vous êtes un enseignant !!!!!");
        new ProfileForm(res).show();
-           //new SideMenuBaseForm(res).show();
-         //   new WalkthruForm(res).show();
+        
         }
       else
         {
-          //System.out.println("vous êtes un élève !!!!!");
-              new DashboardAdministrateur(res).show();
+            
+    Session.utilisateur_connecte=new Utilisateur(0 ,"Indéfini", "Indéfini", user.get("pseudo_util").toString(), user.get("mot_de_passe_util").toString(), user.get("email_util").toString(), "I", user.get("role_util").toString());
+      System.out.println("uuuuuuuuuuuu"+Session.utilisateur_connecte.toString());
+        new DashboardAdministrateur(res).show();
         } 
       }
-    catch (IOException ex)
+    catch (Exception ex)
             {
             }
       
@@ -183,62 +183,78 @@ public class ServiceUtilisateur {
     
         //Définir l'url
          String url=Statics.BASE_URL+"/listUtilisateursJSON";
+         
          //Configurer l'url
            req.setUrl(url);
-    
+    req.setPost(false);
        //Action lors de l'exécution de la requête
-      req.addResponseListener(new ActionListener<NetworkEvent>(){
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                JSONParser jsonp=new JSONParser();
-        try
-        {
-              Map<String,Object> MapUtilisateurs=jsonp.parseJSON(new CharArrayReader(new String(req.getResponseData()).toCharArray() ));
-              
-             List<Map<String,Object>> ListOfMapUtilisateurs= (List<Map<String,Object>>)MapUtilisateurs.get("root");
-             //
-             for( Map<String,Object> util:ListOfMapUtilisateurs)
-             {
-             Utilisateur utilisateur=new Utilisateur();
-             
-             //Réccupérer les données à partir du Map Utilisateur
-             //L'id qui est un entier on va le prendre comme Float sur CodenameOne sinon il ne va pas fonctionner
-             float id=Float.parseFloat( util.get("id").toString() ); 
-             String nom=util.get("nom_util").toString();
-             String prenom=util.get("prenom_util").toString();
-             String pseudo=util.get("pseudo_util").toString();
-             String mot_de_passe=util.get("mot_de_passe_util").toString();
-             String email=util.get("email_util").toString();
-             float age=Float.parseFloat( util.get("age_util").toString() ); //Comme pour l'id   
-             String genre=util.get("genre_util").toString();
-             String role=util.get("role_util").toString();
-             
-             //Créer l'objet utilisateur avec les données réccupérées
-             utilisateur.setId((int)id);
-             utilisateur.setNom_util(nom);
-             utilisateur.setPrenom_util(prenom);
-             utilisateur.setPseudo_util(pseudo);
-             utilisateur.setMot_de_passe_util(mot_de_passe);
-             utilisateur.setEmail_util(email);
-             utilisateur.setAge_util((int)age);
-             utilisateur.setGenre_util(genre);
-             utilisateur.setRole_util(role);
-             //Ajouter à chaque fois  l'ojet "utilisateur" à l'ArrayList resultat
-             resultat.add(utilisateur);
-             }
-        }
-        catch(Exception ex)
-        { ex.printStackTrace(); }
+      req.addResponseListener(new ActionListener<NetworkEvent>() {
+        @Override
+        public void actionPerformed(NetworkEvent evt) {
+            JSONParser j=new JSONParser();
+            
+            String json=new String(req.getResponseData());
+            
+            try
+            {
+                Map<String,Object> MapUtilisateurs=j.parseJSON(new CharArrayReader(json.toCharArray()));
                 
-            }  
-        
-        });
+                List<Map<String,Object>> ListOfMapUtilisateurs=(List<Map<String,Object>>)MapUtilisateurs.get("root");
+                
+                for(Map<String,Object> util :ListOfMapUtilisateurs)
+                {
+                    Utilisateur utilisateur=new Utilisateur();
+                    
+                    //Réccupérer les données à partir du Map Utilisateur
+                    //L'id qui est un entier on va le prendre comme Float sur CodenameOne sinon il ne va pas fonctionner
+                    float id=Float.parseFloat( util.get("id").toString() ); 
+                       String nom="Indéfini";
+                    if(util.get("nom_util") !=null)
+                    {  nom=util.get("nom_util").toString();  }
+                       String prenom="Indéfini";
+                    if(util.get("prenom_util") !=null)
+                    {  prenom=util.get("prenom_util").toString(); }
+                    String pseudo=util.get("pseudo_util").toString();
+                    String mot_de_passe=util.get("mot_de_passe_util").toString();
+                    String email=util.get("email_util").toString();
+                    float age=Float.parseFloat( util.get("age_util").toString() ); //Comme pour l'id
+                       String genre="I";
+                     if(util.get("genre_util") !=null)
+                     {  genre=util.get("genre_util").toString(); }
+                     
+                    String role=util.get("role_util").toString();
+                    
+                    //Créer l'objet utilisateur avec les données réccupérées
+                    utilisateur.setId((int)id);
+                    
+                    utilisateur.setNom_util(nom);
+                    utilisateur.setPrenom_util(prenom);
+                    utilisateur.setPseudo_util(pseudo);
+                    utilisateur.setMot_de_passe_util(mot_de_passe);
+                    utilisateur.setEmail_util(email);
+                    utilisateur.setAge_util((int)age);
+                    utilisateur.setGenre_util(genre);
+                    utilisateur.setRole_util(role);
+                    //Ajouter à chaque fois  l'ojet "utilisateur" à l'ArrayList resultat
+                    
+                    resultat.add(utilisateur);
+                    
+                }
+            } catch(Exception ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+            ResultOK=req.getResponseCode()==200;
+            req.removeResponseListener(this);
+        }
+    });
       
         //Exécution de la requête : Après l'exécution de la requête on attend la réponse du serveur
        NetworkManager.getInstance().addToQueueAndWait(req);
-    
+     
         return resultat;
     }
+    
     //********** Afficher un utilisateur selon son pseudo ************    
     public Utilisateur AfficherUtilisateurParPseudo(String pseudo,Utilisateur utilisateur)
     {

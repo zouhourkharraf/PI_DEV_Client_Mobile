@@ -64,10 +64,13 @@ public abstract class SideMenuBaseFormBackOffice extends Form {
         sidemenuTop.setUIID("SidemenuTop");
         
         getToolbar().addComponentToSideMenu(sidemenuTop);
-        getToolbar().addMaterialCommandToSideMenu("  Dashboard", FontImage.MATERIAL_DASHBOARD,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Activity", FontImage.MATERIAL_TRENDING_UP,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Tasks", FontImage.MATERIAL_ACCESS_TIME,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Account Settings", FontImage.MATERIAL_SETTINGS,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Dashboard",  FontImage.MATERIAL_DASHBOARD,  e -> {});
+        getToolbar().addMaterialCommandToSideMenu("  Les utilisateurs", FontImage.MATERIAL_ACCOUNT_CIRCLE,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Les évènements", FontImage.MATERIAL_ACCESS_TIME,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Les réclamations", FontImage.MATERIAL_REPLAY,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Les Cours", FontImage.MATERIAL_BOOK,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Les formations", FontImage.MATERIAL_BOOK,  e -> showOtherForm(res));
+        getToolbar().addMaterialCommandToSideMenu("  Les activités", FontImage.MATERIAL_TRENDING_UP,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> {
             try {
                 new LoginForm(res).show();

@@ -107,10 +107,7 @@ public class LoginForm extends Form {
         );
         add(BorderLayout.CENTER, by);
         
-        
-        
-        
-        
+     
         
         // for low res and landscape devices
         by.setScrollableY(true);
