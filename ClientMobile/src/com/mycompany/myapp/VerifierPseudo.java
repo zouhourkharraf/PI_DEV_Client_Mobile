@@ -26,14 +26,17 @@ import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.mycompany.entities.Utilisateur;
 import com.mycompany.services.ServiceUtilisateur;
+import com.mycompany.utils.Session;
 import java.io.IOException;
-
 
 
 /**
@@ -41,15 +44,15 @@ import java.io.IOException;
  *
  * @author Shai Almog
  */
-public class LoginForm extends Form {
-    public LoginForm(Resources theme) throws IOException {
+public class VerifierPseudo extends Form {
+    public VerifierPseudo(Resources theme) throws IOException {
         super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_TOTAL_BELOW));
         setUIID("LoginStyle1");
         Container welcome = FlowLayout.encloseCenter(
                        new Label("                                                 "),
                  new Label("                                                 "),
-                new Label("Connectez-vous ", "WelcomeBlue"),
-                 new Label(" à votre compte", "WelcomeBlue")
+                new Label("Vérification ", "WelcomeBlue")
+              
         );
         
             getTitleArea().setUIID("Container");
@@ -58,31 +61,25 @@ public class LoginForm extends Form {
         Label profilePicLabel = new Label(profilePic, "ProfilePic");
         
         TextField login = new TextField("", "Pseudo", 20, TextField.USERNAME) ;
-        TextField password = new TextField("", "Mot de passe", 20, TextField.PASSWORD) ;
+      
         login.getAllStyles().setMargin(LEFT, 0);
-        password.getAllStyles().setMargin(LEFT, 0);
         Label loginIcon = new Label("", "TextField");
-        Label passwordIcon = new Label("", "TextField");
         loginIcon.getAllStyles().setMargin(RIGHT, 0);
-        passwordIcon.getAllStyles().setMargin(RIGHT, 0);
         FontImage.setMaterialIcon(loginIcon, FontImage.MATERIAL_PERSON_OUTLINE, 3);
-        FontImage.setMaterialIcon(passwordIcon, FontImage.MATERIAL_LOCK_OUTLINE, 3);
         
-        Button loginButton = new Button("SE CONNERCTER");
-        loginButton.setUIID("LoginButton");
+        Button BoutonVerifierPseudo = new Button("Valider");
+        BoutonVerifierPseudo.setUIID("LoginButton");
         
-                
-        //Bouton Mot de passe oublié
-        Button BoutonMPoublie = new Button("Mot de passe oublié ?");
-        BoutonMPoublie.setUIID("CreateNewAccountButton");
-       
-        //Bouton "Créer un compte élève"
-        Button CreerCompteEleve = new Button("Créer un compte élève");
-        CreerCompteEleve.setUIID("RemainingTasks");
-        //Bouton "Créer un compte enseignant"
-         Button CreerCompteEenseignant = new Button("Créer un compte enseignant");
-        CreerCompteEenseignant.setUIID("RemainingTasks");
         
+                //********* Bouton "Retour"  *********************
+      getToolbar().addCommandToLeftBar("", Image.createImage("/icone_retour.png") , (ActionListener) (ActionEvent evt) -> {
+            try {
+               new LoginForm(theme).show();
+            } catch (IOException ex) {
+               
+            }
+        });
+    //********* FIN Bouton "Retour"  *********************
         
         
         // We remove the extra space for low resolution devices so things fit better
@@ -102,10 +99,8 @@ public class LoginForm extends Form {
                 spaceLabel,
                 BorderLayout.center(login).
                         add(BorderLayout.WEST, loginIcon),
-                BorderLayout.center(password).
-                        add(BorderLayout.WEST, passwordIcon),
-                loginButton,
-                BoutonMPoublie,CreerCompteEleve,CreerCompteEenseignant
+                BoutonVerifierPseudo
+                
         );
         add(BorderLayout.CENTER, by);
         
@@ -116,47 +111,18 @@ public class LoginForm extends Form {
         by.setScrollVisible(false);
         
                // ***********************************  Gestion de l'événement suite au clique sur le bouton de connexion *************************
-        loginButton.addActionListener(e -> {
-            ServiceUtilisateur.getInstance().login(login, password, theme);
-          
+        BoutonVerifierPseudo.addActionListener(e -> {
+            Utilisateur   u= ServiceUtilisateur.getInstance().AfficherUtilisateurParPseudo("adminmagic1");
+            System.out.println(u.toString());
         });
         
          // ***********************************  FIN Gestion de l'événement suite au clique sur le bouton de connexion *************************
         
-               // ***********************************  Gestion de l'événement suite au clique sur le bouton "Mot de passe oublié" *************************
-       BoutonMPoublie.addActionListener(e -> {
-            try {
-                new VerifierPseudo(theme).show();
-            } catch (IOException ex) { }
-            
-          
-        });
-        
-         // ***********************************  FIN Gestion de l'événement suite au clique sur le bouton "Mot de passe oublié"  *************************
+           
          
          
          
-         
-             // ***********************************  Gestion de l'événement suite au clique sur le bouton "Créder un compte élève " *************************
-        CreerCompteEleve.addActionListener(e -> {
-            try {
-                new PageInscriptionEleve(theme).show();
-            } catch (IOException ex) {
-               
-            }
-        });
-         // *********************************** FIN Gestion de l'événement suite au clique sur le bouton "Créder un compte élève " *************************    
-    
-               // ***********************************  Gestion de l'événement suite au clique sur le bouton "Créder un compte enseignant " *************************
-        CreerCompteEenseignant.addActionListener(e -> {
-            try {
-                 new PageInscription(theme).show();
-            } catch (IOException ex) {
-               
-            }
-        });
-         // ***********************************  FIN Gestion de l'événement suite au clique sur le bouton "Créder un compte enseignant "*************************  
-         
+       
          
     }
 

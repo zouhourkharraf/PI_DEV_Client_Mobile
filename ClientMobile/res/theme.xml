@@ -4,6 +4,7 @@
     <image name="BackgroundRect.png" type="multi"  />
     <image name="DashboardAdminMobile1.png"  />
     <image name="duke.png" type="multi"  />
+    <image name="EspaceUtilisateurMobile.png"  />
     <image name="gradient-overlay.png"  />
     <image name="Image 3"  />
     <image name="login-background.jpg"  />
@@ -29,20 +30,29 @@
         <val key="BottomPaddingContainer.padding" value="0.0,2.0,0.0,0.0" />
         <val key="BottomPaddingContainer.transparency" value="0" />
         <val key="CenterSubTitle.align" value="4" />
-        <val key="CenterSubTitle.fgColor" value="ffffff" />
-        <font key="CenterSubTitle.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.0" />
+        <val key="CenterSubTitle.bgColor" value="ffcc66" />
+        <val key="CenterSubTitle.fgColor" value="0" />
+        <font key="CenterSubTitle.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="CenterSubTitle.margin" value="0.0,0.0,0.0,0.0" />
         <val key="CenterSubTitle.padUnit" value="2,2,2,2" />
         <val key="CenterSubTitle.padding" value="1.0,1.0,1.0,1.0" />
-        <val key="CenterSubTitle.transparency" value="0" />
+        <val key="CenterSubTitle.transparency" value="255" />
+        <val key="CenterSubTitle2.align" value="4" />
+        <val key="CenterSubTitle2.bgColor" value="ffcc66" />
+        <val key="CenterSubTitle2.fgColor" value="0" />
+        <font key="CenterSubTitle2.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
+        <val key="CenterSubTitle2.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="CenterSubTitle2.padUnit" value="2,2,2,2" />
+        <val key="CenterSubTitle2.padding" value="1.0,1.0,1.0,1.0" />
+        <val key="CenterSubTitle2.transparency" value="0" />
         <val key="CenterTitle.align" value="4" />
         <val key="CenterTitle.fgColor" value="ffffff" />
-        <font key="CenterTitle.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.5" />
+        <font key="CenterTitle.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.0" />
         <val key="CenterTitle.margin" value="0.0,0.0,0.0,0.0" />
         <val key="CenterTitle.padUnit" value="2,2,2,2" />
         <val key="CenterTitle.padding" value="1.0,1.0,1.0,1.0" />
         <val key="CenterTitle.transparency" value="0" />
-        <val key="CompletedTasks.bgColor" value="ff7fe5" />
+        <val key="CompletedTasks.bgColor" value="ffcc66" />
         <val key="CompletedTasks.margin" value="0.0,0.0,0.0,0.0" />
         <val key="CompletedTasks.padUnit" value="2,2,2,2" />
         <val key="CompletedTasks.padding" value="3.0,3.0,0.0,0.0" />
@@ -65,6 +75,11 @@
         <font key="CreateNewAccountButton.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="2.5" />
         <val key="CreateNewAccountButton.sel#transparency" value="0" />
         <val key="CreateNewAccountButton.transparency" value="0" />
+        <val key="CreateNewAccountButton2.align" value="4" />
+        <val key="CreateNewAccountButton2.bgColor" value="ccffcc" />
+        <val key="CreateNewAccountButton2.fgColor" value="6666" />
+        <font key="CreateNewAccountButton2.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
+        <val key="CreateNewAccountButton2.transparency" value="255" />
         <val key="FloatingActionButton.bgColor" value="ffffff" />
         <val key="FloatingActionButton.fgColor" value="0" />
         <val key="FloatingActionButton.press#bgColor" value="6aaff" />
@@ -118,4 +133,102 @@
         <val key="LoginStyle1.bgImage" value="Image 3" />
         <val key="LoginStyle1.bgType" value="1" />
         <val key="LoginStyle1.margin" value="0.0,0.0,0.0,0.0" />
-        <val key="LoginStyle1.padding" value="
+        <val key="LoginStyle1.padding" value="0.0,0.0,0.0,0.0" />
+        <val key="LoginStyle1.transparency" value="0" />
+        <val key="MenuButton.fgColor" value="ffffff" />
+        <font key="MenuButton.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="4.5" />
+        <val key="MenuButton.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="MenuButton.padding" value="0.0,0.0,0.0,0.0" />
+        <val key="MenuButton.transparency" value="0" />
+        <val key="ProfilePic.align" value="4" />
+        <val key="ProfilePic.padUnit" value="2,2,2,2" />
+        <val key="ProfilePic.padding" value="3.0,3.0,3.0,3.0" />
+        <val key="ProfilePic.transparency" value="0" />
+        <val key="ProfilePicTitle.align" value="4" />
+        <val key="ProfilePicTitle.padUnit" value="2,2,2,2" />
+        <val key="ProfilePicTitle.padding" value="1.0,3.0,2.0,2.0" />
+        <val key="ProfilePicTitle.transparency" value="0" />
+        <val key="RemainingTasks.align" value="4" />
+        <val key="RemainingTasks.bgColor" value="6666" />
+        <val key="RemainingTasks.fgColor" value="cccc00" />
+        <font key="RemainingTasks.font" type="ttf" face="0" style="0" size="0" name="native:ItalicRegular" family="native:ItalicRegular" sizeSettings="3" actualSize="3.0" />
+        <val key="RemainingTasks.marUnit" value="2,2,2,2" />
+        <val key="RemainingTasks.margin" value="2.0,2.0,4.0,4.0" />
+        <val key="RemainingTasks.padUnit" value="2,2,2,2" />
+        <val key="RemainingTasks.padding" value="1.0,1.0,4.0,4.0" />
+        <val key="RemainingTasks.transparency" value="255" />
+        <val key="SideCommand.align" value="1" />
+        <border key="SideCommand.border" type="empty" />
+        <val key="SideCommand.fgColor" value="a6aff1" />
+        <font key="SideCommand.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="SideCommand.padUnit" value="2,2,2,2" />
+        <val key="SideCommand.padding" value="3.0,2.0,3.0,2.0" />
+        <val key="SideCommand.press#align" value="1" />
+        <border key="SideCommand.press#border" type="empty" />
+        <val key="SideCommand.press#fgColor" value="ffffff" />
+        <font key="SideCommand.press#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="SideCommand.press#padUnit" value="2,2,2,2" />
+        <val key="SideCommand.press#padding" value="3.0,2.0,3.0,2.0" />
+        <val key="SideCommand.press#textDecoration" value="0" />
+        <val key="SideCommand.press#transparency" value="0" />
+        <val key="SideCommand.sel#align" value="1" />
+        <border key="SideCommand.sel#border" type="empty" />
+        <val key="SideCommand.sel#fgColor" value="ffffff" />
+        <font key="SideCommand.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="2.5" />
+        <val key="SideCommand.sel#padUnit" value="2,2,2,2" />
+        <val key="SideCommand.sel#padding" value="3.0,2.0,3.0,2.0" />
+        <val key="SideCommand.sel#textDecoration" value="0" />
+        <val key="SideCommand.sel#transparency" value="0" />
+        <val key="SideCommand.textDecoration" value="0" />
+        <val key="SideCommand.transparency" value="0" />
+        <val key="SideMenuTitle.fgColor" value="ffffff" />
+        <font key="SideMenuTitle.font" type="ttf" face="0" style="0" size="0" name="native:MainLight" family="native:MainLight" sizeSettings="3" actualSize="3.5" />
+        <val key="SideMenuTitle.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SideMenuTitle.padUnit" value="2,2,2,2" />
+        <val key="SideMenuTitle.padding" value="1.0,1.0,1.0,1.0" />
+        <val key="SideMenuTitle.transparency" value="0" />
+        <val key="SideNavigationPanel.bgColor" value="1d224b" />
+        <gradient key="SideNavigationPanel.bgGradient" color1="0" color2="0" posX="0.5" posY="0.5" radius="1.0" />
+        <val key="SideNavigationPanel.bgType" value="0" />
+        <border key="SideNavigationPanel.border" type="empty" />
+        <val key="SideNavigationPanel.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SideNavigationPanel.padding" value="0.0,0.0,0.0,0.0" />
+        <val key="SideNavigationPanel.transparency" value="255" />
+        <val key="SidemenuTop.bgImage" value="DashboardAdminMobile1.png" />
+        <val key="SidemenuTop.bgType" value="33" />
+        <val key="SidemenuTop.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SidemenuTop.padUnit" value="2,2,2,2" />
+        <val key="SidemenuTop.padding" value="20.0,2.0,2.0,2.0" />
+        <val key="SidemenuTop2.bgImage" value="EspaceUtilisateurMobile.png" />
+        <val key="SidemenuTop2.bgType" value="33" />
+        <val key="SidemenuTop2.margin" value="0.0,0.0,0.0,0.0" />
+        <val key="SidemenuTop2.padUnit" value="2,2,2,2" />
+        <val key="SidemenuTop2.padding" value="20.0,2.0,2.0,2.0" />
+        <val key="SkipButton.align" value="4" />
+        <val key="SkipButton.bgColor" value="ffffff" />
+        <val key="SkipButton.fgColor" value="3c464f" />
+        <font key="SkipButton.font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
+        <val key="SkipButton.marUnit" value="2,2,2,2" />
+        <val key="SkipButton.margin" value="3.0,5.0,6.0,6.0" />
+        <val key="SkipButton.padUnit" value="2,2,2,2" />
+        <val key="SkipButton.padding" value="2.0,2.0,2.0,2.0" />
+        <val key="SkipButton.press#align" value="4" />
+        <val key="SkipButton.press#bgColor" value="d2d2d2" />
+        <val key="SkipButton.press#fgColor" value="3c464f" />
+        <font key="SkipButton.press#font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
+        <val key="SkipButton.press#marUnit" value="2,2,2,2" />
+        <val key="SkipButton.press#margin" value="3.0,5.0,6.0,6.0" />
+        <val key="SkipButton.press#padUnit" value="2,2,2,2" />
+        <val key="SkipButton.press#padding" value="2.0,2.0,2.0,2.0" />
+        <val key="SkipButton.press#transparency" value="255" />
+        <val key="SkipButton.sel#align" value="4" />
+        <val key="SkipButton.sel#bgColor" value="d2d2d2" />
+        <val key="SkipButton.sel#fgColor" value="3c464f" />
+        <font key="SkipButton.sel#font" type="ttf" face="0" style="0" size="0" name="native:MainRegular" family="native:MainRegular" sizeSettings="3" actualSize="3.5" />
+        <val key="SkipButton.sel#marUnit" value="2,2,2,2" />
+        <val key="SkipButton.sel#margin" value="3.0,5.0,6.0,6.0" />
+        <val key="SkipButton.sel#padUnit" value="2,2,2,2" />
+        <val key="SkipButton.sel#padding" value="2.0,2.0,2.0,2.0" />
+        <val key="SkipButton.sel#transparency" value="255" />
+        <val key="SkipButton.transparency" value="255" />
+        <val key="Statu

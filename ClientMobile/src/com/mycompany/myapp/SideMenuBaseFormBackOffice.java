@@ -27,6 +27,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
+import com.mycompany.services.ServiceUtilisateur;
 import java.io.IOException;
 
 
@@ -71,13 +72,10 @@ public abstract class SideMenuBaseFormBackOffice extends Form {
         getToolbar().addMaterialCommandToSideMenu("  Les Cours", FontImage.MATERIAL_BOOK,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Les formations", FontImage.MATERIAL_BOOK,  e -> showOtherForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Les activités", FontImage.MATERIAL_TRENDING_UP,  e -> showOtherForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> {
-            try {
-                new LoginForm(res).show();
-            } catch (IOException ex) {
-              //  Logger.getLogger(SideMenuBaseForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+        getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP, (evt) -> {ServiceUtilisateur.getInstance().SeDeconnecter(res);
+        }
+       
+        );
     }
     
     protected abstract void showOtherForm(Resources res);

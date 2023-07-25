@@ -30,6 +30,8 @@ import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -58,7 +60,18 @@ public class PageInscription extends Form {
       //  profilePic = profilePic.fill(mask.getWidth(), mask.getHeight());
         Label profilePicLabel = new Label(profilePic, "ProfilePic");
     //    profilePicLabel.setMask(mask.createMask());
-        
+       
+        //********* Bouton "Retour"  *********************
+      getToolbar().addCommandToLeftBar("", Image.createImage("/icone_retour.png") , (ActionListener) (ActionEvent evt) -> {
+            try {
+                new LoginForm(theme).showBack();
+            } catch (IOException ex) {
+               
+            }
+        });
+    //********* FIN Bouton "Retour"  *********************
+    
+    
         TextField champ_nom = new TextField("Votre nom", "nom", 20, TextField.USERNAME) ;
         TextField champ_prenom = new TextField("Votre prénom", "prenom", 20, TextField.USERNAME) ;
         NumericSpinner champ_age=new NumericSpinner();
@@ -248,5 +261,10 @@ public class PageInscription extends Form {
         // for low res and landscape devices
         by.setScrollableY(true);
         by.setScrollVisible(false);
+    
+  
+    
+    
+    
     }
 }

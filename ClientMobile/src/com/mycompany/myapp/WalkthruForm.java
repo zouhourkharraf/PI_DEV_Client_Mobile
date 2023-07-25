@@ -37,6 +37,8 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.LayeredLayout;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
+
 
 /**
  * A swipe tutorial for the application
@@ -118,7 +120,13 @@ public class WalkthruForm extends Form {
         
         Button skip = new Button("SKIP TUTORIAL");
         skip.setUIID("SkipButton");
-        skip.addActionListener(e -> new ProfileForm(res).show());
+        skip.addActionListener(e -> {
+            try {
+                new ProfileForm(res).show();
+            } catch (IOException ex) {
+             
+            }
+        });
         
         Container southLayout = BoxLayout.encloseY(
                         radioContainer,

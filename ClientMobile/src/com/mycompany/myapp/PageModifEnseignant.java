@@ -1,21 +1,4 @@
-/*
- * Copyright (c) 2016, Codename One
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
- * documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
- * and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions 
- * of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A 
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
- */
+
 
 package com.mycompany.myapp;
 
@@ -38,37 +21,49 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.spinner.NumericSpinner;
 import com.codename1.ui.util.Resources;
 import com.codename1.util.regex.RE;
+import com.mycompany.entities.Utilisateur;
 import com.mycompany.services.ServiceUtilisateur;
+import com.mycompany.utils.Session;
 import java.io.IOException;
 
 
 
-public class PageInscriptionEleve extends Form {
-    public PageInscriptionEleve(Resources theme) throws IOException {
+public class PageModifEnseignant extends Form {
+    public PageModifEnseignant(Resources theme,Utilisateur utilisateur_a_modifier) throws IOException {
         super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_TOTAL_BELOW));
         setUIID("LoginForm");
         Container welcome = FlowLayout.encloseCenter(
                 new Label("                            "),
-                new Label("  Créer un compte  ", "WelcomeWhite"),
-              new Label("  élève :", "WelcomeBlue")
+                new Label("Modifier mes information", "WelcomeWhite"),
+              new Label("Enseignant :", "WelcomeBlue")
         );
         
         getTitleArea().setUIID("Container");
         
         Image profilePic = Image.createImage("/logo_finale.png");
         Label profilePicLabel = new Label(profilePic, "ProfilePic");
-           //********* Bouton "Retour"  *********************
+       
+        //********* Bouton "Retour"  *********************
       getToolbar().addCommandToLeftBar("", Image.createImage("/icone_retour.png") , (ActionListener) (ActionEvent evt) -> {
             try {
-                new LoginForm(theme).showBack();
+                if(Session.EspaceConnecte) //si on est connectée sur l'espace administrateur 
+                {
+                new DashboardAdministrateur(theme).showBack();
+                }
+                else
+                {
+                new ProfileForm(theme).showBack(); //si on est connectée sur l'espace utilisateur
+                }
+                
             } catch (IOException ex) {
                
             }
         });
     //********* FIN Bouton "Retour"  *********************
-        
-        TextField champ_nom = new TextField("Votre nom", "nom", 20, TextField.USERNAME) ;
-        TextField champ_prenom = new TextField("Votre prénom", "prenom", 20, TextField.USERNAME) ;
+    
+    
+        TextField champ_nom = new TextField(utilisateur_a_modifier.getNom_util(), "nom", 20, TextField.USERNAME) ;
+        TextField champ_prenom = new TextField(utilisateur_a_modifier.getPrenom_util(), "prenom", 20, TextField.USERNAME) ;
         NumericSpinner champ_age=new NumericSpinner();
         //Le genre
         Container BoxGenre=new Container(BoxLayout.y());
@@ -86,58 +81,53 @@ public class PageInscriptionEleve extends Form {
         BoxGenre.add(label_genre);
         BoxGenre.add(c);
         //FIN Le genre
-        TextField champ_email = new TextField("Votre email", "Votre email", 20, TextField.EMAILADDR) ;
-        TextField champ_mp = new TextField("Mot de passe", "Mot de passe", 20, TextField.PASSWORD) ;
-        TextField champ_confirmation_mp = new TextField("Confirmation de mot de passe", "Confirmation de mot de passe", 20, TextField.PASSWORD) ;
+        TextField champ_email = new TextField(utilisateur_a_modifier.getEmail_util(), "Votre email", 20, TextField.EMAILADDR) ;
+     
         
         //Mise en forme des champs du formulaire
         champ_nom.getAllStyles().setMargin(LEFT, 0);
         champ_prenom.getAllStyles().setMargin(LEFT, 0);
         champ_age.getAllStyles().setMargin(LEFT, 0);
         champ_email.getAllStyles().setMargin(LEFT, 0);
-        champ_mp.getAllStyles().setMargin(LEFT, 0);
-        champ_confirmation_mp.getAllStyles().setMargin(LEFT, 0);
+      
         //Crétion des label sous formes d'icones (et sans texte)
         Label loginIcon = new Label("", "TextField");
         Label prenomIcon = new Label("", "TextField");
         Label ageIcon = new Label("Votre age", "SpinnerWrapper");
         Label emailIcon = new Label("", "TextField");
-        Label passwordIcon = new Label("", "TextField");
-        Label password2Icon = new Label("", "TextField");
+        
         //Mise en forme des labels
         loginIcon.getAllStyles().setMargin(RIGHT, 0);
         prenomIcon.getAllStyles().setMargin(RIGHT, 0);
         ageIcon.getAllStyles().setMargin(RIGHT, 0);
-       
-             
-        
         emailIcon.getAllStyles().setMargin(RIGHT, 0);
-        passwordIcon.getAllStyles().setMargin(RIGHT, 0);
-        password2Icon.getAllStyles().setMargin(RIGHT, 0);
+   
         //Définir les icones des labels
         FontImage.setMaterialIcon(loginIcon, FontImage.MATERIAL_PERSON_PIN, 3);
         FontImage.setMaterialIcon(prenomIcon, FontImage.MATERIAL_PERSON_PIN, 3);
         FontImage.setMaterialIcon(ageIcon, FontImage.MATERIAL_PERSON_PIN, 3);
-        FontImage.setMaterialIcon(emailIcon, FontImage.MATERIAL_EMAIL, 3); 
-        FontImage.setMaterialIcon(passwordIcon, FontImage.MATERIAL_LOCK_OUTLINE, 3);
-        FontImage.setMaterialIcon(password2Icon, FontImage.MATERIAL_LOCK_OUTLINE, 3);
+        FontImage.setMaterialIcon(emailIcon, FontImage.MATERIAL_EMAIL, 3);         
      
            //Définir le label pour l'age +  les contraintes (controle de saisie):
            champ_age.setLabelForComponent(ageIcon);
-           champ_age.setMin(5);
+           champ_age.setMin(22);
            champ_age.setMax(200);
            //FIN Définir le label pour l'age +  les contraintes (controle de saisie):
+       
         //Créer un Container qui contient le label de l'age et le NumericSpinner
          Container BoxAge=new Container(BoxLayout.x()); 
          BoxAge.add(ageIcon);
          BoxAge.add(champ_age);
+       // Réccupérer l'age de l'utilisateur à modifier
+       champ_age.setValue( (double)utilisateur_a_modifier.getAge_util() );
+         
+       
+        //Création du bouton de modification
+        Button BoutonModifierEnseignant = new Button("Modifier");
+        BoutonModifierEnseignant.setUIID("LoginButton");
         
-        //Création du bouton d'ajout
-        Button BoutonInscription = new Button("Valider");
-        BoutonInscription.setUIID("LoginButton");
-        
-       // ***********************************  Gestion de l'événement suite au clique sur le bouton d'inscription *************************
-        BoutonInscription.addActionListener(e -> {
+       // ***********************************  Gestion de l'événement suite au clique sur le bouton de modification *************************
+        BoutonModifierEnseignant.addActionListener(e -> {
           
             Double age1=champ_age.getValue(); //Récupérer la valeur de l'age choisi
                //définir le genre choisi par l'utilisateur
@@ -150,14 +140,11 @@ public class PageInscriptionEleve extends Form {
         {
         genre_choisi=OnOffGenre.getOff();
         }
-        
-         
+          Boolean formulaire_valide=false; //On va utiliser cette variable pour tester la validité du formulaire
          // ****** Controle de saisie ***********
-      Boolean formulaire_valide=false; //On va utiliser cette variable pour tester la validité du formulaire
-      
-    if( (champ_nom.getText().isEmpty()) || ( champ_prenom.getText().isEmpty() ) || ( champ_email.getText().isEmpty() )||( champ_mp.getText().isEmpty() )|| ( champ_confirmation_mp.getText().isEmpty() ) )
+    if( (champ_nom.getText().isEmpty()) || ( champ_prenom.getText().isEmpty() ) || ( champ_email.getText().isEmpty() ) )
     {
-        Dialog.show("Erreur !","Veuillez renseigner tous les champs !!!","OK",null);
+        Dialog.show("Erreur !","Veuillez renseigner tous les champs !","OK",null);
     }
     else 
     {
@@ -184,23 +171,7 @@ public class PageInscriptionEleve extends Form {
                   {  Dialog.show("Erreur !", "Adresse invalide !","OK",null);  }
                  else
                  {
-                      if( champ_mp.getText().compareTo(champ_confirmation_mp.getText())!=0 )
-                           {  Dialog.show("Erreur !", "Les mots de passe ne sont pas identiques !!!","OK",null); }
-                    /*
-                     //le mot de passe
-                      RE regexp4;
-                      regexp4 = new RE("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}"); 
-                      if(!regexp4.match(champ_mp.getText()) ) 
-                      {  Dialog.show("Erreur !", "le mot de passe doit comporter au moins 8 caractères avec au moins une lettre majuscule lettre miniscule, et un chiffre","OK",null);  }
-                      else
-                      {}
-                     */
-                      else //càd si tous les données sont valides
-                      {
-                       formulaire_valide=true;
-                      }
-                    
-                    
+                    formulaire_valide=true;  
                  }
                }
             }
@@ -213,13 +184,16 @@ public class PageInscriptionEleve extends Form {
           
         if(formulaire_valide)
         {
-           String pseudo1=ServiceUtilisateur.getInstance().AjouterUtilisateur(champ_nom, champ_prenom, age1.toString(), genre_choisi, champ_email, champ_mp, champ_confirmation_mp,"élève", theme);
-        Dialog.show("Félicitation !","Votre inscription a été effectué avec succès !  Votre pseudo : "+pseudo1,"OK",null);
+           String pseudo1=ServiceUtilisateur.getInstance().ModifierUtilisateur(utilisateur_a_modifier.getId(),champ_nom, champ_prenom, age1.toString(), genre_choisi, champ_email,"enseignant", theme);
+        Dialog.show("Notification !","La modification a été effectué avec succès ! \n Votre nouveau pseudo : "+pseudo1,"OK",null);
                 try {
-                    new LoginForm(theme).show();
-                } catch (IOException ex) {
-                   // Logger.getLogger(PageInscriptionEleve.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    if(Session.EspaceConnecte)
+                    { new DashboardAdministrateur(theme).show() ; }
+                    else
+                    {  new LoginForm(theme).show();  }
+                } catch (IOException ex) { }
+                  
+                  
         }
          
      
@@ -247,11 +221,7 @@ public class PageInscriptionEleve extends Form {
                         BoxGenre,
                BorderLayout.center(champ_email).
                         add(BorderLayout.WEST, emailIcon),
-                BorderLayout.center(champ_mp).
-                        add(BorderLayout.WEST, passwordIcon),
-                BorderLayout.center(champ_confirmation_mp).
-                        add(BorderLayout.WEST, password2Icon),
-                BoutonInscription
+                BoutonModifierEnseignant
                
         );
         add(BorderLayout.CENTER, by);
@@ -259,5 +229,10 @@ public class PageInscriptionEleve extends Form {
         // for low res and landscape devices
         by.setScrollableY(true);
         by.setScrollVisible(false);
+    
+  
+    
+    
+    
     }
 }

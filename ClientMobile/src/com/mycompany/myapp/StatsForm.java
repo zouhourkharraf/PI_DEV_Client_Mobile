@@ -41,6 +41,8 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.table.TableModel;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
+
 
 /**
  *
@@ -141,7 +143,11 @@ public class StatsForm extends SideMenuBaseForm {
     
     @Override
     protected void showOtherForm(Resources res) {
-        new ProfileForm(res).show();
+        try {
+            new ProfileForm(res).show();
+        } catch (IOException ex) {
+        
+        }
     }
 
     private XYMultipleSeriesRenderer createChartMultiRenderer() {

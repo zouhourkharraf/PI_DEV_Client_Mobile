@@ -19,13 +19,9 @@
 
 package com.mycompany.myapp;
 
-import com.codename1.charts.ChartComponent;
-import com.codename1.charts.models.XYMultipleSeriesDataset;
-import com.codename1.charts.models.XYSeries;
+
 import com.codename1.charts.renderers.XYMultipleSeriesRenderer;
 import com.codename1.charts.renderers.XYSeriesRenderer;
-import com.codename1.charts.views.CubicLineChart;
-import com.codename1.charts.views.PointStyle;
 import com.codename1.components.ImageViewer;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
@@ -43,13 +39,13 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
-import com.codename1.ui.table.TableModel;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Utilisateur;
 import com.mycompany.services.ServiceUtilisateur;
 import com.mycompany.utils.Session;
 import java.io.IOException;
 import java.util.ArrayList;
+
 
 
 /**
@@ -120,32 +116,28 @@ public class DashboardAdministrateur extends SideMenuBaseFormBackOffice {
        for(Utilisateur util : ListeUtilisateurs)
          {        
        //      System.out.println(util.toString());
-         Container C_resultat = addItemToList(util);  //cette méthode publique permet de créer  un élément graphique avec les données de l'utilisateur "util" passé en paramètres et l'ajouter à la Form(page) principale
+         Container C_resultat = addItemToList(util,res);  //cette méthode publique permet de créer  un élément graphique avec les données de l'utilisateur "util" passé en paramètres et l'ajouter à la Form(page) principale
         by.add(C_resultat);
-     // by.add(new Label("bonjour Salut"));
-        refreshTheme();
-         
+         refreshTheme();
         }
  
-        
-        
-        // ******************* FIN Affichage de la liste des utilisateurs *******************************************   
-        
+        // ******************* FIN Affichage de la liste des utilisateurs *******************************************      
         
     }
     
        
        
     //La fonction addItem  //cette méthode va ous retourner un container qui représente une ligne utilisateur 
-        public Container addItemToList(Utilisateur utilisateur) throws IOException
+        public Container addItemToList(Utilisateur utilisateur,Resources res1) throws IOException
         {
-           //  ImageViewer image_viewer_update=null;  //Créer un ImageViewer
-             // ImageViewer image_viewer_delete=null;  //Créer un ImageViewer
-            //  Image icone_update =Image.createImage( FontImage.MATERIAL_UPDATE); 
               Container Container_enregistrement_utilisateur = new Container(new BoxLayout(BoxLayout.X_AXIS),"TextField"); //le container qui va contenir la ligne des données de l'utilisateur
               ImageViewer image_viewer_update = new ImageViewer(Image.createImage("/icone_modifier.png"));
               ImageViewer image_viewer_delete = new ImageViewer(Image.createImage("/icone_supprimer.png"));
-            
+              Label label_delete=new Label("");
+              label_delete.setIcon(image_viewer_delete.getImage());
+              Label label_update=new Label("");
+              label_update.setIcon(image_viewer_update.getImage());
+              
           Container Container_donnees = new Container(new BoxLayout(BoxLayout.Y_AXIS));//est le container qui va contenir des données de l'utilisateur seulement( id + pseudo ) dans les icones detete et update  
           Container Container_id = new Container(new BoxLayout(BoxLayout.X_AXIS)); //est le Container de l'id (label +id utilisateur)
           Container Container_pseudo = new Container(new BoxLayout(BoxLayout.X_AXIS)); //est le Container du pseudo (label +pseudo utilisateur)
@@ -164,9 +156,39 @@ public class DashboardAdministrateur extends SideMenuBaseFormBackOffice {
           Container_donnees.add(Container_pseudo);
           
           Container_enregistrement_utilisateur.add(Container_donnees);
-          Container_enregistrement_utilisateur.add(image_viewer_update);
-          Container_enregistrement_utilisateur.add(image_viewer_delete);
-          Container_enregistrement_utilisateur.setLeadComponent(label_id);
+          Container_enregistrement_utilisateur.add(label_update);
+          Container_enregistrement_utilisateur.add(label_delete);
+          
+                label_id.addPointerPressedListener((ActionListener) (ActionEvent evt) -> { // Afficher tous les données de l'utilisateur courant
+            Dialog.show("Utilisateur", "Id : " + label_id_utilisateur.getText() + " \n Nom : " + utilisateur.getNom_util() + " \n Prénom : " + utilisateur.getPrenom_util()+ " \n Pseudo : " + utilisateur.getPseudo_util()+ " \n Mot de passe : " + utilisateur.getMot_de_passe_util()+ " \n Email : " + utilisateur.getEmail_util()+ " \n Age : " + utilisateur.getAge_util()+ " \n Genre : " + utilisateur.getGenre_util()+ " \n Rôle : " + utilisateur.getRole_util(), "Ok", "Retour");
+       
+                });
+       
+                
+           label_delete.addPointerPressedListener((ActionListener) (ActionEvent evt) -> { // Supprimer l'utilisateur courant
+         if(ServiceUtilisateur.getInstance().SupprimerUtilisateur(utilisateur.getId()))
+         {
+         Dialog.show("Magic Book", "Oprération réussite", "OK", null);
+         }
+                  try {
+                      new DashboardAdministrateur(res1).show();
+                  } catch (IOException ex) { }
+           
+                });
+           
+           label_update.addPointerPressedListener((ActionListener) (ActionEvent evt) -> { // Modifier l'utilisateur courant
+     
+                  try {
+                          if( utilisateur.getRole_util().compareTo("enseignant")==0 )
+                           {  new PageModifEnseignant(res1,utilisateur).show();  }
+                          else
+                           {  new PageModifEleve(res1,utilisateur).show();  }    
+                  
+                      } catch (IOException ex) { }
+           
+                });
+            
+         // Container_enregistrement_utilisateur.setLeadComponent(label_id);
           
           return Container_enregistrement_utilisateur;
          
