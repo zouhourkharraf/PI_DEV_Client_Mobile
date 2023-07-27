@@ -18,11 +18,14 @@ import com.mycompany.entities.Utilisateur;
 import com.mycompany.myapp.DashboardAdministrateur;
 import com.mycompany.myapp.LoginForm;
 import com.mycompany.myapp.ProfileForm;
+import com.mycompany.myapp.VerifierCodeSecret;
 import com.mycompany.utils.Session;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
+import java.util.Random;
+
 
 
 /**
@@ -334,67 +337,139 @@ public class ServiceUtilisateur {
         return resultat;
     }
     
-    //********** Afficher un utilisateur selon son pseudo ************    
-    public Utilisateur AfficherUtilisateurParPseudo(String pseudo)
+       // **************************** FINAfficher Utilisateurs *********************************************** 
+    
+    //***************************** Gestion de la fonctionnalié mot de passe oublié ************************************ 
+    
+    
+    public void VerifierPseudoUtilPourMPoublie(String pseudo2,Resources res)
     {
-        Utilisateur utilisateur=new Utilisateur();
-     //Définir l'url
-         String url=Statics.BASE_URL+"/AfficherUtilisateurPseudoJSON/"+pseudo;
-          req=new ConnectionRequest(url, false);
+        //Définir l'url
+         String url=Statics.BASE_URL+"/AfficherUtilisateurPseudoJSON?pseudo_pour_mp_oublie="+pseudo2;
+         req=new ConnectionRequest(url, false);
          //Configurer l'url
            req.setUrl(url);
+    
            
-            
-           req.addResponseCodeListener((e) -> {
-           
-         
-             JSONParser j=new JSONParser();
-            
-            String json=new String(req.getResponseData());
-              System.out.println("data ====>"+json);
-            try
-            {
-                Map<String,Object> MapUtilisateur=j.parseJSON(new CharArrayReader(json.toCharArray()));
-         
-          //L'id qui est un entier on va le prendre comme Float sur CodenameOne sinon il ne va pas fonctionner
-                    float id=Float.parseFloat( MapUtilisateur.get("id").toString() ); 
-          utilisateur.setId((int)id);
-          String nom="Indéfini";
-          if( MapUtilisateur.get("nom_util").toString()!= null )
-          { nom=MapUtilisateur.get("nom_util").toString(); }
-          utilisateur.setNom_util(nom);
-          String prenom="Indéfini";
-          if( MapUtilisateur.get("prenom_util").toString()!= null )
-          { prenom=MapUtilisateur.get("prenom_util").toString(); }
-          utilisateur.setPrenom_util(prenom); 
-          
-           utilisateur.setPseudo_util(MapUtilisateur.get("pseudo_util").toString());
-         utilisateur.setMot_de_passe_util(MapUtilisateur.get("mot_de_passe_util").toString());
-         utilisateur.setEmail_util(MapUtilisateur.get("email_util").toString());
-           float age=Float.parseFloat( MapUtilisateur.get("age_util").toString() ); 
-          utilisateur.setAge_util((int)age);
-          String genre="I";
-            if( MapUtilisateur.get("genre_util").toString()!= null )
-          { genre=MapUtilisateur.get("genre_util").toString(); }
-           utilisateur.setGenre_util(genre);
-            utilisateur.setRole_util(MapUtilisateur.get("role_util").toString());     
+            //Action lors de l'exécution de la requête
+      req.addResponseListener((e)->{
+    JSONParser j=new JSONParser();
+    
+    String json=new String(req.getResponseData()) + "";
+     
+   
+    if(json.compareTo("Ce pseudo n'existe pas")==0)
+    {
+      new Dialog().show("Attention !", "Ce pseudo n'existe pas !","OK",null);
+    }
+    else
+    {
+          try
+         {
         
-            } catch(Exception ex)
+      Map<String,Object> user=j.parseJSON(new CharArrayReader(json.toCharArray())); 
+       // System.out.println("data ==="+user);
+      
+        if( ( user.get("role_util").toString().compareTo("enseignant")==0) ||( user.get("role_util").toString().compareTo("élève")==0) )
+        {
+       Session.utilisateur_mp_oublie=new Utilisateur( (int)Float.parseFloat(user.get("id").toString()) , (int)Float.parseFloat(user.get("age_util").toString()) ,user.get("nom_util").toString(),user.get("prenom_util").toString() , user.get("pseudo_util").toString(), user.get("mot_de_passe_util").toString(), user.get("email_util").toString(), user.get("genre_util").toString(), user.get("role_util").toString());
+       System.out.println("util ::::::::::::::::::::::::::::::"+Session.utilisateur_mp_oublie.toString());
+        }
+        else 
+        {
+            //si il est "administrateur" alors il possède quelques attributs qui sont "null" la chose qui permet de créer un problème même si on a fait le catch pour l'execption"NullPointerExeption" donc on va affecter d'autres valeurs pour les attributs qui sont suceptibles d'être "null"
+    Session.utilisateur_mp_oublie=new Utilisateur((int)Float.parseFloat(user.get("id").toString()),0 ,"Indéfini", "Indéfini", user.get("pseudo_util").toString(), user.get("mot_de_passe_util").toString(), user.get("email_util").toString(), "I", user.get("role_util").toString());
+        }
+       //****************  Variables pour créer le texte du message
+            int CodeSecret=GenererCodeSecret();
+            String genre_utilisateur=""; //cette variable va contenir Monsieur ou Madame selon le genre de l'utilisateur réccupéré
+            if( Session.utilisateur_mp_oublie.getRole_util().compareTo("administrateur") != 0) //si l'utilisateur n'est administrateur donc il possède un genre
             {
-                System.out.println(ex.getMessage());
+             if( Session.utilisateur_mp_oublie.getGenre_util().compareTo("F") ==0 ) 
+             {
+             genre_utilisateur="Madame";
+             }
+             else
+             {
+               genre_utilisateur="Monsieur";
+             }
             }
-          //  ResultOK=req.getResponseCode()==200;
-        //    req.removeResponseListener(this);
-        
-           });
+             //sinon càd si l'utilisateur est administrateur (donc son attribut de genre contient null) la variable genre_utilisateur va rester vide  
+            String nom_utilisateur="",prenom_utilisateur="";
+             
+             if( Session.utilisateur_mp_oublie.getRole_util().compareTo("administrateur") != 0) //si l'utilisateur n'est administrateur donc il possède un nom et un prénom
+             {
+             nom_utilisateur= Session.utilisateur_mp_oublie.getNom_util(); //---> le nom de l'utilisateur réccupéré 
+             prenom_utilisateur= Session.utilisateur_mp_oublie.getPrenom_util(); //---> le prénom de l'utilisateur réccupéré 
+             }
+              //sinon càd si l'utilisateur est administrateur (donc il n'a pas de nom ni un prénom) les deux variables nom_utilisateur et prenom_utilisateur vont rester vides
+             
+              //****************  FIN Variables pour créer le texte du message    
+                     // **************** Variables pour la configuration de l'email
+             String email_utilisateur=Session.utilisateur_mp_oublie.getEmail_util();
+             
+             //construire le corps du message en html
+             String message= "<h4>Bonjour "+genre_utilisateur+"</h4><h4>"+nom_utilisateur+" "+prenom_utilisateur+"</h4><h4>Vore code est : "+CodeSecret+"</h4><h4>L'équipe Magic Book</h4>";
+             
+             Mail.send("magicbook835@gmail.com", "yijfdvaakbioplfg",email_utilisateur, "Magic Book : Récupération du mot de passe", message); //send est une méthode statique 
+
+              try {
+                 new VerifierCodeSecret(res, CodeSecret).show();
+                } catch (IOException ex) { }
            
-        //Exécution de la requête : Après l'exécution de la requête on attend la réponse du serveur
-       NetworkManager.getInstance().addToQueueAndWait(req);       
-           
-    return utilisateur;
+      }
+    catch (Exception ex)
+            {
+            }
+      
     }
     
-     // **************************** FINAfficher Utilisateurs ***********************************************      
+    });
+   
+    //Exécution de la requête : Après l'exécution de la requête on attend la réponse du serveur
+    NetworkManager.getInstance().addToQueueAndWait(req);
+               
+}
+    
+    // *************** cette méthode permet de générer un nombre aléatoire compris entre 10000 et 99999
+    private int GenererCodeSecret()
+   {    
+   Random rand = new Random(); // créer un  objet de type Random
+   int Code = rand.nextInt(99999 - 10000 + 1) + 10000; //générer un nombre aléatoire entre 10000 et 99999
+   return Code;
+   }
+    
+    
+    //Modifier mot de passe utilisateur
+        
+     public Boolean ModifierMotDePasseUtilisateur(int id_utilisateur,String nouveau_mp_utilisateur,Resources res)
+    {
+        String id_string=String.valueOf(id_utilisateur);
+        //Définir l'url
+        String url=Statics.BASE_URL+"/modifierMPJSON/"+id_string+"?nouveau_mot_de_passe_util="+nouveau_mp_utilisateur;
+        //String url=Statics.BASE_URL+"/modifierMPJSON/1?nouveau_mot_de_passe_util=88888888Aa";
+        req=new ConnectionRequest(url, false);   
+        //Configurer l'url
+            req.setUrl(url);
+            
+         //Action lors de l'exécution de la requête
+      req.addResponseListener((e)->{
+    byte[] data=(byte[])e.getMetaData();
+    String ResponseData=new String(data);
+        System.out.println("data ====> "+ResponseData);
+       
+    });   
+             
+        //Exécution de la requête : Après l'exécution de la requête on attend la réponse du serveur
+       NetworkManager.getInstance().addToQueueAndWait(req); 
+              
+              return ResultOK;
+    
+    }
+    
+    //***************************** FIN Gestion de la fonctionnalié mot de passe oublié ************************************  
+    
+       
     
   
 // ********************************* Supprimer un utilisateur *******************************************

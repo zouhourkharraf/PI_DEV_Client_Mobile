@@ -1,6 +1,7 @@
 
 
 package com.mycompany.myapp;
+import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
@@ -17,11 +18,11 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
-import com.mycompany.entities.Utilisateur;
+
 import com.mycompany.services.ServiceUtilisateur;
 import com.mycompany.utils.Session;
 import java.io.IOException;
-import java.util.Random;
+
 
 
 /**
@@ -29,12 +30,13 @@ import java.util.Random;
  *
  * @author Shai Almog
  */
-public class VerifierPseudo extends Form {
-    public VerifierPseudo(Resources theme) throws IOException {
+public class VerifierCodeSecret extends Form {
+    public VerifierCodeSecret(Resources theme,int code_envoye) throws IOException {
         super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_TOTAL_BELOW));
         setUIID("LoginStyle1");
         Container welcome = FlowLayout.encloseCenter(
-                new Label("Vérification ", "WelcomeBlue")
+                new Label("Vérification du code envoyé", "WelcomeBlue"),
+                new SpanLabel("Un code est envoyé à l'adresse suivante : "+Session.utilisateur_mp_oublie.getEmail_util(), "LoginButton2")
               
         );
         
@@ -43,16 +45,17 @@ public class VerifierPseudo extends Form {
         Image profilePic = Image.createImage("/grand_logo_finale.png");
         Label profilePicLabel = new Label(profilePic, "ProfilePic");
         
-        TextField pseudo_mp_oublie = new TextField("", "Pseudo", 20, TextField.USERNAME) ;
+        TextField code_secret_mp_oublie = new TextField("", "Code", 20, TextField.USERNAME) ;
       
-        pseudo_mp_oublie.getAllStyles().setMargin(LEFT, 0);
+        code_secret_mp_oublie.getAllStyles().setMargin(LEFT, 0);
         Label loginIcon = new Label("", "TextField");
         loginIcon.getAllStyles().setMargin(RIGHT, 0);
         FontImage.setMaterialIcon(loginIcon, FontImage.MATERIAL_PERSON_OUTLINE, 3);
         
-        Button BoutonVerifierPseudo = new Button("Valider");
-        BoutonVerifierPseudo.setUIID("LoginButton");
-        
+        Button BoutonVerifierCodeSecret = new Button("Confirmer");
+        BoutonVerifierCodeSecret.setUIID("LoginButton3");
+        Button BoutonAnnuler = new Button("Annuler");
+        BoutonAnnuler.setUIID("LoginButton3");
         
                 //********* Bouton "Retour"  *********************
       getToolbar().addCommandToLeftBar("", Image.createImage("/icone_retour.png") , (ActionListener) (ActionEvent evt) -> {
@@ -81,9 +84,9 @@ public class VerifierPseudo extends Form {
                 profilePicLabel,
                 welcome,
                 spaceLabel,
-                BorderLayout.center(pseudo_mp_oublie).
+                BorderLayout.center(code_secret_mp_oublie).
                         add(BorderLayout.WEST, loginIcon),
-                BoutonVerifierPseudo
+                BoutonVerifierCodeSecret,BoutonAnnuler
                 
         );
         add(BorderLayout.CENTER, by);
@@ -94,24 +97,30 @@ public class VerifierPseudo extends Form {
         by.setScrollableY(true);
         by.setScrollVisible(false);
         
-               // ***********************************  Gestion de l'événement suite au clique sur le bouton "Valider" pour vérifier le pseudo *************************
-        BoutonVerifierPseudo.addActionListener(e -> {
-            if( pseudo_mp_oublie.getText().compareTo("")!=0 )
+               // ***********************************  Gestion de l'événement suite au clique sur le bouton "Confirmer" pour vérifier le code secret *************************
+        BoutonVerifierCodeSecret.addActionListener(e -> {
+            if( code_secret_mp_oublie.getText().compareTo(String.valueOf(code_envoye))==0 )
             {
-            ServiceUtilisateur.getInstance().VerifierPseudoUtilPourMPoublie(pseudo_mp_oublie.getText(),theme);
-               // System.out.println(Session.utilisateur_mp_oublie.toString());
+                 try {
+               new ModifierMPUtilisateur(theme).show();
+            } catch (IOException ex) {
+               
+            }
             }
             else
             {
-            Dialog.show("Erreur !","Veuillez renseigner votre pseudo !","OK",null);
+                        Dialog.show("Erreur !","Code incorrect !","OK",null);
             }
                 
           
         });
         
-         // ***********************************  FIN Gestion de l'événement suite au clique sur le bouton "Valider" pour vérifier le pseudo *************************
+         // ***********************************  FIN Gestion de l'événement suite au clique sur le bouton "Confirmer" pour vérifier le code secret *************************
         
-     
+     // ***** Le bouton "Annuler" *******
+     BoutonAnnuler.addActionListener(e -> {
+         code_secret_mp_oublie.setText("");
+     });
          
     }
 
